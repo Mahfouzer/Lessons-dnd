@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {DayContainer, WeekContainer} from "./WeekSchedule.styled"
+import {AddLessonButton, DayContainer, WeekContainer} from "./WeekSchedule.styled"
 import Lesson from "../Lesson/Lesson";
 import { Days } from "../../Models/Days.model";
 
@@ -88,11 +88,17 @@ export default function WeekSchedule() {
 
   
 
-  
+  const addNewLesson = (dayNumber: number) => {
+    let schedule = [...state];
+    schedule[dayNumber] = [...getItems(1), ...schedule[dayNumber]];
+    setState(schedule);
+  };
 
   return (
     <div>
-     
+      <AddLessonButton type="button" onClick={() => addNewLesson(Days["FRIDAY"])}>
+        Add new item
+      </AddLessonButton>
       <WeekContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, daysIndex) => (
