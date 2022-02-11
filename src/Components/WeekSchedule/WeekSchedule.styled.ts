@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const DayContainer = styled.div<{ isDraggingOver: boolean }>`
-  background: green;
   background: ${({ isDraggingOver }) =>
     isDraggingOver ? "#f1f1f1" : "#f5f5f5"};
-  padding: 20px;
   width: 400px;
   min-width: 150px;
   border-right:1px solid #dbdada;
+  border-bottom:1px solid #dbdada;
+  height: 60vh;
+  overflow-y:auto;
 `;
 
 export const WeekContainer = styled.div`
@@ -28,4 +29,28 @@ background: transparent;
     border-color:black;
     transition: all 0.5s ease-out;
   }
+`
+
+
+export const DayInfo = styled.div`
+text-align:center;
+width:100%;
+margin-bottom:20px;
+font-weight:bold;
+min-width:150px;
+`  
+;
+
+export const Banner = styled.div`
+width: 100vw;
+min-width:${(150*7)+7}px;
+background: #f4f4f4;
+text-align: center;
+height: 18px;
+border-bottom: 1px solid #dbdada;
+border-top: 1px solid #dbdada;
+font-size: 18px;
+color: grey;
+font-weight:bold;
+padding:9px 0;
 `

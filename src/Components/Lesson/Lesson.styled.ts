@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const LessonCard = styled.div<{ isDragged: boolean }>`
   background-color: ${(props) => (props.isDragged ? "#dbf9fb" : "white")};
   userselect: "none";
-  margin: 10px;
+  margin: 15px;
   padding: 5px;
   min-height: 70px;
   border-radius: 3px;
