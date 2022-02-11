@@ -21,7 +21,7 @@ export const LessonContentWrapper = styled.div`
     height: calc(100% - 10px);
     display: inline-block;
     width: 3px;
-    background-color: lightBlue;
+    background-color: darkcyan;
     position: absolute;
     left: 5px;
     top: 5px;
@@ -38,3 +38,9 @@ export const RemoveButton = styled.button`
   text-decoration: underline;
   float: right;
 `;
+
+export const LessonDescription = styled.p`
+margin-top:30px;
+font-style:italic;
+color:darkcyan;
+`

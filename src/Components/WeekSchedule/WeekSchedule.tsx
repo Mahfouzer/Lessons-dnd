@@ -16,6 +16,7 @@ const getItems = (count: any, offset = 0) => [
   {
     id: `${Math.round(Math.random() * 100000)}`,
     content: `item ${offset}`,
+    description:"this is a lesson"
   },
 ];
 

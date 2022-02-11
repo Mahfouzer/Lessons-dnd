@@ -3,6 +3,7 @@ import {
   LessonCard,
   LessonContentWrapper,
   RemoveButton,
+  LessonDescription
 } from "./Lesson.styled";
 
 export default function Lesson({
@@ -28,6 +29,9 @@ export default function Lesson({
         >
           Remove
         </RemoveButton>
+        <LessonDescription>
+        {item.description}
+        </LessonDescription>
       </LessonContentWrapper>
     </LessonCard>
   );
