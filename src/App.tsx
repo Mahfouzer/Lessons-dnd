@@ -1,8 +1,8 @@
-
+import WeekSchedule from './Components/WeekSchedule/WeekSchedule'
 function App() {
   return (
     <div className="App">
-     <h1>Draft 1</h1>
+     <WeekSchedule/>
     </div>
   );
 }
