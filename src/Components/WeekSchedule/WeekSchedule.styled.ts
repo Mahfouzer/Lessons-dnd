@@ -53,3 +53,13 @@ color: grey;
 font-weight:bold;
 padding:9px 0;
 `
+
+export const CloseButton = styled(AddLessonButton)`
+  color:red;
+  border:none;
+  position:absolute;
+  right:5px;
+  top:15px;
+  font-size:0.8em;
+  text-decoration: underline;
+`

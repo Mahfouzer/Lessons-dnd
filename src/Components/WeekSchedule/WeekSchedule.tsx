@@ -6,50 +6,17 @@ import {
   DayContainer,
   DayInfo,
   WeekContainer,
+  CloseButton,
 } from "./WeekSchedule.styled";
 import Lesson from "../Lesson/Lesson";
 import { Days } from "../../Models/Days.model";
-// import styled from "styled-components";
-
-// fake data generator
-const getItems = (count: any, offset = 0) => [
-  {
-    id: `${Math.round(Math.random() * 100000)}`,
-    content: `item ${offset}`,
-    description:"this is a lesson"
-  },
-];
-
-const reorder = (list: any, startIndex: any, endIndex: any) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
-
-/**
- * Moves an item from one list to another list.
- */
-const move = (
-  source: any,
-  destination: any,
-  droppableSource: { droppableId: number; index: number },
-  droppableDestination: any
-) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result: any = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
-};
+import LessonModal from "../LessonModal/LessonModal";
+import LessonForm from "../LessonForm/LessonForm";
+import { getItems, move, reorder } from "./helpers";
 
 export default function WeekSchedule() {
+  const [isLessonModalOpen, updateModalVisibility] = useState(false);
+  const [targetLesson, setTargetLesson] = useState(null);
   const [state, setState] = useState([
     getItems(10),
     getItems(15, 10),
@@ -86,16 +53,37 @@ export default function WeekSchedule() {
     }
   }
 
+  const toggleModalVisibility = () => {
+    updateModalVisibility((visible) => !visible);
+  };
+
   const removeLessonHandler = (daysIndex: number, lessonIndex: number) => {
     const newState = [...state];
     newState[daysIndex].splice(lessonIndex, 1);
     setState(newState);
   };
 
-  const addNewLesson = (dayNumber: number) => {
+  const addNewLesson = (data: any) => {
+    const dayNumber = Number(data.dayIndex);
+    delete data.dayIndex;
     let schedule = [...state];
-    schedule[dayNumber] = [...getItems(1), ...schedule[dayNumber]];
+    schedule[dayNumber] = [...schedule[dayNumber], data];
     setState(schedule);
+  };
+
+  const updateCurrentLesson = (data: any) => {
+    let schedule = [...state];
+    const dayNumber = Number(data.dayIndex);
+    const { id, subject, description } = data;
+    delete data.dayIndex;
+
+    let targetedLessonIndex = schedule[dayNumber].findIndex(
+      (lesson) => lesson.id == id
+    );
+    schedule[dayNumber][targetedLessonIndex] = { id, subject, description };
+
+    setState(schedule);
+    setTargetLesson(null);
   };
 
   const renderDaysName = () =>
@@ -107,12 +95,17 @@ export default function WeekSchedule() {
     <div>
       <AddLessonButton
         type="button"
-        onClick={() => addNewLesson(Days["FRIDAY"])}
+        onClick={() => {
+          setTargetLesson(null);
+          toggleModalVisibility();
+        }}
       >
         Add new item
       </AddLessonButton>
+
       <WeekContainer>{renderDaysName()}</WeekContainer>
       <Banner>Weekdays</Banner>
+
       <WeekContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, daysIndex) => (
@@ -137,6 +130,13 @@ export default function WeekSchedule() {
                           provided={provided}
                           snapshot={snapshot}
                           removeLessonHandler={removeLessonHandler} // could be refactored into a component
+                          updateLessonHandler={(
+                            item: any,
+                            daysIndex: any,
+                          ) => {
+                            setTargetLesson({ ...item, dayIndex: daysIndex });
+                            toggleModalVisibility();
+                          }}
                         />
                       )}
                     </Draggable>
@@ -148,6 +148,21 @@ export default function WeekSchedule() {
           ))}
         </DragDropContext>
       </WeekContainer>
+
+      <LessonModal isLessonModalOpen={isLessonModalOpen}>
+        <CloseButton onClick={toggleModalVisibility}>Close</CloseButton>
+        <LessonForm
+          submitHandler={(data: any) => {
+            if (targetLesson) {
+              updateCurrentLesson(data);
+            } else {
+              addNewLesson(data);
+            }
+            toggleModalVisibility();
+          }}
+          defaultValues={targetLesson}
+        />
+      </LessonModal>
     </div>
   );
 }
