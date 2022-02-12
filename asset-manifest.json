@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/dnd-lessons/static/css/main.e6c13ad2.css",
+    "main.js": "/dnd-lessons/static/js/main.b49c3a48.js",
+    "index.html": "/dnd-lessons/index.html",
+    "main.e6c13ad2.css.map": "/dnd-lessons/static/css/main.e6c13ad2.css.map",
+    "main.b49c3a48.js.map": "/dnd-lessons/static/js/main.b49c3a48.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.b49c3a48.js"
+  ]
+}
