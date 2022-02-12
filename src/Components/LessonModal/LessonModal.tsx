@@ -5,7 +5,7 @@ export default function LessonModal({ isLessonModalOpen, children }: any) {
     <ReactModal
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
-      style={{ content: { height: "max-content", inset: "30%" } }}
+      style={{ content: { height: "50%", maxWidth:"400px",inset: "20% calc(50% - 200px)" } }}
       shouldFocusAfterRender
       isOpen={isLessonModalOpen}
       ariaHideApp={false}

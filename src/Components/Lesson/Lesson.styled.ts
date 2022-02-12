@@ -15,7 +15,7 @@ export const LessonCard = styled.div<{ isDragged: boolean }>`
 
 export const LessonContentWrapper = styled.div`
   padding: 10px 15px;
-  height: 70px;
+  padding-bottom: 0;
   &:before {
     content: "";
     height: calc(100% - 10px);
@@ -33,11 +33,27 @@ export const ActionButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-  float: right;
+  background: white;
+  padding: 2px;
+  margin: 5px 5px 5px 0;
+  font-weight: bold;
+
+  &:hover{
+    opacity:0.6;
+  }
+`;
+
+export const RemoveButton = styled(ActionButton)`
+  color: red;
+`;
+
+export const UpdateButton = styled(ActionButton)`
+  color: grey;
 `;
 
 export const LessonDescription = styled.p`
-margin-top:30px;
-font-style:italic;
-color:darkcyan;
-`
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-style: italic;
+  color: darkcyan;
+`;

@@ -32,7 +32,7 @@ export const move = (
 export const getItems = (count: any, offset = 0) => [
     {
       id: `${Math.round(Math.random() * 100000)}`,
-      subject: `item ${offset}`,
+      subject: `Lesson ${offset}`,
       description: "this is a lesson",
     },
   ];
