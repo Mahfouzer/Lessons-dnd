@@ -42,7 +42,6 @@ min-width:150px;
 ;
 
 export const Banner = styled.div`
-width: 100vw;
 min-width:${(150*7)+7}px;
 background: #f4f4f4;
 text-align: center;
