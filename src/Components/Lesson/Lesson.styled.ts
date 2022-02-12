@@ -29,13 +29,10 @@ export const LessonContentWrapper = styled.div`
   }
 `;
 
-export const RemoveButton = styled.button`
+export const ActionButton = styled.button`
   background: transparent;
-  color: red;
-  text-style: underline;
   border: none;
   cursor: pointer;
-  text-decoration: underline;
   float: right;
 `;
 

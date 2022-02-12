@@ -7,6 +7,7 @@ import {
   Option,
   FieldContainer,
   SubmitButton,
+  FormHeading,
 } from "./LessonForm.styled";
 import { useForm } from "react-hook-form";
 
@@ -17,13 +18,17 @@ export default function LessonForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm({
     reValidateMode: "onChange",
     ...(defaultValues && { defaultValues }),
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) =>
+    submitHandler({
+      id: `${Math.round(Math.random() * 100000)}`,
+      ...data,
+    });
 
   const renderDaysOptions = () =>
     Object.keys(Days)
@@ -34,26 +39,36 @@ export default function LessonForm({
         </Option>
       ));
 
+  const renderHeading = () =>
+    defaultValues ? (
+      <FormHeading>Update lesson</FormHeading>
+    ) : (
+      <FormHeading>Add new lesson</FormHeading>
+    );
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FieldContainer hasError={errors.dayIndex && touchedFields.dayIndex}>
-        <Label htmlFor="dayIndex">Day</Label>
-        <Select {...register("dayIndex", { required: true })}>
-          {renderDaysOptions()}
-        </Select>
-      </FieldContainer>
+    <>
+      {renderHeading()}
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FieldContainer hasError={errors.dayIndex}>
+          <Label htmlFor="dayIndex">Day</Label>
+          <Select disabled={Boolean(defaultValues)} {...register("dayIndex", { required: true })}>
+            {renderDaysOptions()}
+          </Select>
+        </FieldContainer>
 
-      <FieldContainer hasError={errors.subject && touchedFields.subject}>
-        <Label htmlFor="subject">Subject</Label>
-        <Input type="text" {...register("subject", { required: true })} />
-      </FieldContainer>
+        <FieldContainer hasError={errors.subject}>
+          <Label htmlFor="subject">Subject</Label>
+          <Input type="text" {...register("subject", { required: true })} />
+        </FieldContainer>
 
-      <FieldContainer hasError={errors.description && touchedFields.description}>
-        <Label htmlFor="description">Description</Label>
-        <Input type="text" {...register("description", { required: true })} />
-      </FieldContainer>
+        <FieldContainer hasError={errors.description}>
+          <Label htmlFor="description">Description</Label>
+          <Input type="text" {...register("description", { required: true })} />
+        </FieldContainer>
 
-      <SubmitButton type="submit" />
-    </Form>
+        <SubmitButton type="submit" />
+      </Form>
+    </>
   );
 }
