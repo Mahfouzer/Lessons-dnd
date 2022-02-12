@@ -1,12 +1,12 @@
-import WeekSchedule from './Components/WeekSchedule/WeekSchedule'
-import Logo from "./Assets/logo.png"
-import { LogoImg } from './App.styled';
+import WeekSchedule from "./Components/WeekSchedule/WeekSchedule";
+import Logo from "./Assets/logo.png";
+import { LogoImg, MainSection } from "./App.styled";
 function App() {
   return (
-    <div className="App">
-      <LogoImg src={Logo} alt="Lesson dnd logo"/>
-     <WeekSchedule/>
-    </div>
+    <MainSection>
+      <LogoImg src={Logo} alt="Lesson dnd logo" />
+      <WeekSchedule />
+    </MainSection>
   );
 }
 
