@@ -16,6 +16,7 @@ export const LessonCard = styled.div<{ isDragged: boolean }>`
 export const LessonContentWrapper = styled.div`
   padding: 10px 15px;
   padding-bottom: 0;
+  word-break: break-all;
   &:before {
     content: "";
     height: calc(100% - 10px);
