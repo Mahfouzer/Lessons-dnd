@@ -57,3 +57,8 @@ export const FieldContainer = styled.div<{ hasError: boolean }>`
       }
     `}
 `;
+
+
+export const FormHeading = styled.h2`
+      text-align:center;
+`
