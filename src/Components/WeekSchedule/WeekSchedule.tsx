@@ -100,7 +100,7 @@ export default function WeekSchedule() {
           toggleModalVisibility();
         }}
       >
-        Add new item
+       + Add new Lesson
       </AddLessonButton>
 
       <WeekContainer>{renderDaysName()}</WeekContainer>
