@@ -2,8 +2,8 @@ import React from "react";
 import {
   LessonCard,
   LessonContentWrapper,
-  RemoveButton,
-  LessonDescription
+  ActionButton,
+  LessonDescription,
 } from "./Lesson.styled";
 
 export default function Lesson({
@@ -13,6 +13,7 @@ export default function Lesson({
   provided,
   snapshot,
   removeLessonHandler,
+  updateLessonHandler
 }: any) {
   return (
     <LessonCard
@@ -22,13 +23,21 @@ export default function Lesson({
       isDragged={snapshot.isDragging}
     >
       <LessonContentWrapper>
-        {item.content}
-        <RemoveButton
+        {item.subject}
+        <ActionButton
           type="button"
           onClick={() => removeLessonHandler(daysIndex, lessonIndex)}
         >
-          Remove
-        </RemoveButton>
+          🗑
+        </ActionButton>
+
+        <ActionButton
+          type="button"
+          onClick={() => updateLessonHandler(item, daysIndex, lessonIndex)}
+        >
+          📝	
+        </ActionButton>
+        
         <LessonDescription>
         {item.description}
         </LessonDescription>
