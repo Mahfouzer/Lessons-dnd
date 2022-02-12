@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const LESSON_WIDTH = 220;
+const LESSON_WIDTH = 190;
 
 export const DayContainer = styled.div<{ isDraggingOver: boolean }>`
   background: ${({ isDraggingOver }) =>
@@ -9,7 +9,7 @@ export const DayContainer = styled.div<{ isDraggingOver: boolean }>`
   min-width: ${LESSON_WIDTH}px;
   height: 60vh;
   overflow-y: auto;
-  
+
   border-right: 1px solid #dbdada;
   border-bottom: 1px solid #dbdada;
   &:first-child {
@@ -32,7 +32,7 @@ export const AddLessonButton = styled.button`
   font-size: 20px;
 
   display: block;
-  margin: 80px auto;
+  margin: 0 auto 80px auto;
 
   &:hover {
     border-color: black;
@@ -49,7 +49,7 @@ export const DayInfo = styled.div`
 `;
 
 export const Banner = styled.div`
-  min-width: ${LESSON_WIDTH * 7 + 5}px;
+  min-width: ${LESSON_WIDTH * 7 + 6}px;
   background: #f4f4f4;
   text-align: center;
   height: 18px;
@@ -82,4 +82,8 @@ export const CloseButton = styled.button`
     border-color: black;
     transition: all 0.5s ease-out;
   }
+`;
+
+export const ScheduleContainer = styled.article`
+  width: 100%;
 `;
