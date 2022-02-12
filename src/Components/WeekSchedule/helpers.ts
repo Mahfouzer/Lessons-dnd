@@ -1,18 +1,23 @@
-export const reorder = (list: any, startIndex: any, endIndex: any) => {
+import { DraggableLocation } from "react-beautiful-dnd";
+import { LessonType } from "../../Models/Lesson.model";
+
+export const reorder = (
+  list: LessonType[],
+  startIndex: number,
+  endIndex: number
+): LessonType[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-  return result;
+  return result as LessonType[];
 };
 
-/**
- * Moves an item from one list to another list.
- */
+// Moves an item from one list to another list.
 export const move = (
-  source: any,
-  destination: any,
-  droppableSource: { droppableId: number; index: number },
-  droppableDestination: any
+  source: LessonType[],
+  destination: LessonType[],
+  droppableSource: DraggableLocation,
+  droppableDestination: DraggableLocation
 ) => {
   const sourceClone = Array.from(source);
   const destClone = Array.from(destination);
@@ -20,19 +25,19 @@ export const move = (
 
   destClone.splice(droppableDestination.index, 0, removed);
 
-  const result: any = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
+  const result: {[x:number]:LessonType[]}= {
+    [droppableSource.droppableId] : sourceClone,
+    [droppableDestination.droppableId] : destClone,
+  };
 
   return result;
 };
 
-
 // fake data generator
-export const getItems = (count: any, offset = 0) => [
-    {
-      id: `${Math.round(Math.random() * 100000)}`,
-      subject: `Lesson ${offset}`,
-      description: "this is a lesson",
-    },
-  ];
+export const generateLesson = (lessonSubject: string) => [
+  {
+    id: `${Math.round(Math.random() * 100000)}`,
+    subject: `${lessonSubject} Lesson`,
+    description: "this is a lesson",
+  },
+];

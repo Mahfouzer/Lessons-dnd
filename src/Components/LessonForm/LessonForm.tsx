@@ -10,11 +10,17 @@ import {
   FormHeading,
 } from "./LessonForm.styled";
 import { useForm } from "react-hook-form";
+import { LessonType } from "../../Models/Lesson.model";
+
+interface LessonFormProps{
+  submitHandler: (data:LessonType)=>void,
+  defaultValues: null | LessonType,
+};
 
 export default function LessonForm({
   submitHandler,
   defaultValues = null,
-}: any) {
+}: LessonFormProps) {
   const {
     register,
     handleSubmit,
@@ -24,9 +30,9 @@ export default function LessonForm({
     ...(defaultValues && { defaultValues }),
   });
 
-  const onSubmit = (data: any) =>
+  const onSubmit = (data: LessonType) =>
     submitHandler({
-      id: `${Math.round(Math.random() * 100000)}`,
+      ...(!data.id && {id:`${Math.round(Math.random() * 100000)}`}),
       ...data,
     });
 
@@ -50,19 +56,19 @@ export default function LessonForm({
     <>
       {renderHeading()}
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FieldContainer hasError={errors.dayIndex}>
+        <FieldContainer hasError={Boolean(errors.dayIndex)}>
           <Label htmlFor="dayIndex">Day</Label>
           <Select disabled={Boolean(defaultValues)} {...register("dayIndex", { required: true })}>
             {renderDaysOptions()}
           </Select>
         </FieldContainer>
 
-        <FieldContainer hasError={errors.subject}>
+        <FieldContainer hasError={Boolean(errors.subject)}>
           <Label htmlFor="subject">Subject</Label>
           <Input type="text" {...register("subject", { required: true })} />
         </FieldContainer>
 
-        <FieldContainer hasError={errors.description}>
+        <FieldContainer hasError={Boolean(errors.description)}>
           <Label htmlFor="description">Description</Label>
           <Input type="text" {...register("description", { required: true })} />
         </FieldContainer>

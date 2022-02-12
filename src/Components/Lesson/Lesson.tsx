@@ -1,3 +1,5 @@
+import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
+import { LessonType } from "../../Models/Lesson.model";
 import {
   LessonCard,
   LessonContentWrapper,
@@ -6,6 +8,20 @@ import {
   UpdateButton,
 } from "./Lesson.styled";
 
+interface LessonProps {
+  item: LessonType;
+  daysIndex: number;
+  lessonIndex: number;
+  provided: DraggableProvided;
+  snapshot: DraggableStateSnapshot;
+  removeLessonHandler: (daysIndex: number, lessonIndex: number) => void;
+  updateLessonHandler: (
+    item: LessonType,
+    daysIndex: number,
+    lessonIndex: number
+  ) => void;
+}
+
 export default function Lesson({
   item,
   daysIndex,
@@ -13,8 +29,8 @@ export default function Lesson({
   provided,
   snapshot,
   removeLessonHandler,
-  updateLessonHandler
-}: any) {
+  updateLessonHandler,
+}: LessonProps) {
   return (
     <LessonCard
       ref={provided.innerRef}
@@ -23,16 +39,14 @@ export default function Lesson({
       isDragged={snapshot.isDragging}
     >
       <LessonContentWrapper>
-        {item.subject}  
-        <LessonDescription>
-        {item.description}
-        </LessonDescription>
+        {item.subject}
+        <LessonDescription>{item.description}</LessonDescription>
 
         <UpdateButton
           type="button"
           onClick={() => updateLessonHandler(item, daysIndex, lessonIndex)}
         >
-          Edit	
+          Edit
         </UpdateButton>
 
         <RemoveButton

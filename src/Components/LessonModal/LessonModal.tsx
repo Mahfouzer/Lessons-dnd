@@ -1,6 +1,12 @@
+import { ReactNode } from "react";
 import ReactModal from "react-modal";
 
-export default function LessonModal({ isLessonModalOpen, children }: any) {
+interface LessonModalProps{
+  isLessonModalOpen:boolean;
+  children:ReactNode
+}
+
+export default function LessonModal({ isLessonModalOpen, children }: LessonModalProps) {
   return (
     <ReactModal
       shouldCloseOnOverlayClick={true}
