@@ -23,6 +23,18 @@ export const WeekContainer = styled.div`
 
 export const WeekActionButtonsContainer = styled.div`
   display: flex;
+
+  @media screen and (max-width: 900px){ 
+    width: 100vw;
+    position: sticky;
+    left: 0;
+    button{
+      min-width:50px;
+      font-size: 15px;
+      padding: 17px 18px;
+    }
+  }
+
 `;
 
 export const ActionButton = styled.button`
@@ -91,4 +103,27 @@ export const CloseButton = styled.button`
 
 export const ScheduleContainer = styled.article`
   width: 100%;
+
+  @media screen and (max-width: 900px){ 
+    min-width: ${LESSON_WIDTH * 7 + 6}px;
+    position:relative;
+  }
+`;
+
+
+export const LoadingText = styled.p`
+@keyframes color-change {
+  0% { color: #DDFFF7; }
+  25% { color: #93E1D8; }
+  50% { color: #FFA69E; }
+  75% { color: #AA4465; }
+  100% { color: #861657; }
+}
+
+font-size:2.5em;
+  display:block;
+  width:max-content;
+  margin:50px auto;
+  animation: color-change 2s infinite;
+
 `;

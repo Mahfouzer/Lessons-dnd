@@ -12,6 +12,7 @@ import {
   ScheduleContainer,
   WeekActionButtonsContainer,
   ActionButton,
+  LoadingText,
 } from "./WeekSchedule.styled";
 import Lesson from "../Lesson/Lesson";
 import LessonModal from "../LessonModal/LessonModal";
@@ -30,11 +31,12 @@ export default function WeekSchedule() {
   useEffect(() => {
     fetch(`https://brass-graceful-rodent.glitch.me/weeks/${currentWeekNumber}`)
       .then((response) => response.json())
-      .then(({ data }) => setWeekScheduleData(data));
+      .then(({ data }) => setWeekScheduleData(data))
+      .catch((e)=> notifyError());
   }, [currentWeekNumber]);
 
   if (!weekScheduleData) {
-    return <p>loading...</p>;
+    return <LoadingText>loading...</LoadingText>;
   }
 
   const UpdateWeekData = async (data: WeekScheduleType) => {
@@ -168,7 +170,7 @@ export default function WeekSchedule() {
   };
 
   return (
-    <>
+      <ScheduleContainer>
       <WeekActionButtonsContainer>
         <ActionButton
           type="button"
@@ -189,8 +191,8 @@ export default function WeekSchedule() {
         </ActionButton>
       </WeekActionButtonsContainer>
 
-      <ScheduleContainer>
         <WeekScheduleHeader />
+
         <WeekContainer>
           <DragDropContext onDragEnd={onDragEnd}>
             {weekScheduleData &&
@@ -247,6 +249,5 @@ export default function WeekSchedule() {
           />
         </LessonModal>
       </ScheduleContainer>
-    </>
   );
 }
