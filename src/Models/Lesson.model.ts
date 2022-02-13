@@ -4,3 +4,13 @@ export type LessonType = {
   subject: string;
   description: string;
 }
+
+export type WeekScheduleType = [
+  LessonType[],
+  LessonType[],
+  LessonType[],
+  LessonType[],
+  LessonType[],
+  LessonType[],
+  LessonType[],
+]

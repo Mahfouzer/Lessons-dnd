@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -6,37 +6,72 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import {
-  AddLessonButton,
   DayContainer,
   WeekContainer,
   CloseButton,
   ScheduleContainer,
+  WeekActionButtonsContainer,
+  ActionButton,
 } from "./WeekSchedule.styled";
 import Lesson from "../Lesson/Lesson";
 import LessonModal from "../LessonModal/LessonModal";
 import LessonForm from "../LessonForm/LessonForm";
-import { generateLesson, move, reorder } from "./helpers";
+import { move, reorder } from "./helpers";
 import WeekScheduleHeader from "./WeekScheduleHeader";
-import { LessonType } from "../../Models/Lesson.model";
+import { LessonType, WeekScheduleType } from "../../Models/Lesson.model";
 
 export default function WeekSchedule() {
   const [isLessonModalOpen, updateModalVisibility] = useState(false);
-  const [targetLesson, setTargetLesson] = useState<null|LessonType>(null);
-  const [weekScheduleData, setWeekScheduleData] = useState([
-    generateLesson("Math"),
-    [],
-    generateLesson("English"),
-    [],
-    [],
-    generateLesson("Art"),
-    generateLesson("Programming"),
-  ]);
+  const [targetLesson, setTargetLesson] = useState<null | LessonType>(null);
+  const [currentWeekNumber, setWeekNumber] = useState(0);
+  const [weekScheduleData, setWeekScheduleData] =
+    useState<null | WeekScheduleType>(null);
+
+  useEffect(() => {
+    fetch(`https://brass-graceful-rodent.glitch.me/weeks/${currentWeekNumber}`)
+      .then((response) => response.json())
+      .then(({ data }) => setWeekScheduleData(data));
+  }, [currentWeekNumber]);
+
+  if (!weekScheduleData) {
+    return <p>loading...</p>;
+  }
+
+  const UpdateWeekData = async (data: WeekScheduleType) => {
+    // fallback data
+    const preUpdatedData: WeekScheduleType = [...weekScheduleData];
+
+    //optimistic update
+    setWeekScheduleData(data);
+
+    //request options
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: currentWeekNumber, data }),
+    };
+
+    //updating with server
+    fetch(
+      `https://brass-graceful-rodent.glitch.me/weeks/${currentWeekNumber}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((SuccessfulUpdatedWeek) => {
+        setWeekScheduleData(SuccessfulUpdatedWeek.data);
+      })
+      .catch((e) => {
+        alert("An error happened please try again later");
+        //fallback to previous data
+        setWeekScheduleData(preUpdatedData);
+      });
+  };
 
   function onDragEnd(result: DropResult): void {
     const { source, destination } = result;
 
     // dropped outside the list
-    if (!destination) {
+    if (!destination || !weekScheduleData) {
       return;
     }
     const sourceIndex: number = Number(source.droppableId);
@@ -49,10 +84,10 @@ export default function WeekSchedule() {
         source.index,
         destination.index
       );
-      const newWeekScheduleData = [...weekScheduleData];
 
+      const newWeekScheduleData: WeekScheduleType = [...weekScheduleData];
       newWeekScheduleData[sourceIndex] = items;
-      setWeekScheduleData(newWeekScheduleData);
+      UpdateWeekData(newWeekScheduleData);
     } else {
       const result = move(
         weekScheduleData[sourceIndex],
@@ -60,11 +95,11 @@ export default function WeekSchedule() {
         source,
         destination
       );
-      const newWeekScheduleData = [...weekScheduleData];
+      const newWeekScheduleData: WeekScheduleType = [...weekScheduleData];
       newWeekScheduleData[sourceIndex] = result[sourceIndex];
       newWeekScheduleData[destinationIndex] = result[destinationIndex];
 
-      setWeekScheduleData(newWeekScheduleData);
+      UpdateWeekData(newWeekScheduleData);
     }
   }
 
@@ -76,31 +111,35 @@ export default function WeekSchedule() {
     daysIndex: number,
     lessonIndex: number
   ): void => {
-    const newWeekScheduleData = [...weekScheduleData];
+    const newWeekScheduleData: WeekScheduleType = [...weekScheduleData];
     newWeekScheduleData[daysIndex].splice(lessonIndex, 1);
-    setWeekScheduleData(newWeekScheduleData);
+    UpdateWeekData(newWeekScheduleData);
   };
 
   const addNewLesson = (data: LessonType): void => {
     const dayNumber = Number(data.dayIndex);
     delete data.dayIndex;
-    let schedule = [...weekScheduleData];
-    schedule[dayNumber] = [...schedule[dayNumber], data];
-    setWeekScheduleData(schedule);
+    let newWeekScheduleData: WeekScheduleType = [...weekScheduleData];
+    newWeekScheduleData[dayNumber] = [...newWeekScheduleData[dayNumber], data];
+    UpdateWeekData(newWeekScheduleData);
   };
 
   const updateCurrentLesson = (data: LessonType): void => {
-    let schedule = [...weekScheduleData];
+    let newWeekScheduleData: WeekScheduleType = [...weekScheduleData];
     const dayNumber = Number(data.dayIndex);
     const { id, subject, description } = data;
     delete data.dayIndex;
 
-    let targetedLessonIndex = schedule[dayNumber].findIndex(
+    let targetedLessonIndex = newWeekScheduleData[dayNumber].findIndex(
       (lesson: LessonType) => lesson.id == id
     );
-    schedule[dayNumber][targetedLessonIndex] = { id, subject, description };
+    newWeekScheduleData[dayNumber][targetedLessonIndex] = {
+      id,
+      subject,
+      description,
+    };
 
-    setWeekScheduleData(schedule);
+    UpdateWeekData(newWeekScheduleData);
     setTargetLesson(null);
   };
 
@@ -118,53 +157,83 @@ export default function WeekSchedule() {
     toggleModalVisibility();
   };
 
+  const goToNextWeekHandler = () => {
+    setWeekNumber((number) => number + 1);
+  };
+
+  const goToPreviousWeekHandler = () => {
+    setWeekNumber((number) => number - 1);
+  };
+
   return (
     <>
-      <AddLessonButton type="button" onClick={openNewLessonModal}>
-        + Add new Lesson
-      </AddLessonButton>
+      <WeekActionButtonsContainer>
+        <ActionButton
+          type="button"
+          onClick={goToPreviousWeekHandler}
+          disabled={currentWeekNumber === 0}
+        >
+          Previous Week
+        </ActionButton>
+        <ActionButton type="button" onClick={openNewLessonModal}>
+          + Add new Lesson
+        </ActionButton>
+        <ActionButton
+          type="button"
+          onClick={goToNextWeekHandler}
+          disabled={currentWeekNumber === 2}
+        >
+          Next Week
+        </ActionButton>
+      </WeekActionButtonsContainer>
+
       <ScheduleContainer>
         <WeekScheduleHeader />
         <WeekContainer>
           <DragDropContext onDragEnd={onDragEnd}>
-            {weekScheduleData.map((el, daysIndex) => (
-              <Droppable key={daysIndex} droppableId={`${daysIndex}`}>
-                {(provided, snapshot) => (
-                  <DayContainer
-                    ref={provided.innerRef}
-                    isDraggingOver={snapshot.isDraggingOver}
-                    {...provided.droppableProps}
-                  >
-                    {el.map((item, lessonIndex) => (
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={lessonIndex}
-                      >
-                        {(provided, snapshot) => (
-                          <Lesson
-                            item={item}
-                            lessonIndex={lessonIndex}
-                            daysIndex={daysIndex}
-                            provided={provided}
-                            snapshot={snapshot}
-                            removeLessonHandler={removeLessonHandler} // could be refactored into a component
-                            updateLessonHandler={(
-                              item: LessonType,
-                              daysIndex: number
-                            ) => {
-                              setTargetLesson({ ...item, dayIndex: daysIndex });
-                              toggleModalVisibility();
-                            }}
-                          />
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </DayContainer>
-                )}
-              </Droppable>
-            ))}
+            {weekScheduleData &&
+              weekScheduleData.map((dayData: LessonType[], daysIndex) => (
+                <Droppable key={daysIndex} droppableId={`${daysIndex}`}>
+                  {(provided, snapshot) => (
+                    <DayContainer
+                      ref={provided.innerRef}
+                      isDraggingOver={snapshot.isDraggingOver}
+                      {...provided.droppableProps}
+                    >
+                      {Boolean(dayData.length) &&
+                        dayData.map((item, lessonIndex) => (
+                          <Draggable
+                            key={item.id}
+                            draggableId={item.id}
+                            index={lessonIndex}
+                          >
+                            {(provided, snapshot) => (
+                              <Lesson
+                                item={item}
+                                lessonIndex={lessonIndex}
+                                daysIndex={daysIndex}
+                                provided={provided}
+                                snapshot={snapshot}
+                                removeLessonHandler={removeLessonHandler} // could be refactored into a component
+                                updateLessonHandler={(
+                                  item: LessonType,
+                                  daysIndex: number
+                                ) => {
+                                  setTargetLesson({
+                                    ...item,
+                                    dayIndex: daysIndex,
+                                  });
+                                  toggleModalVisibility();
+                                }}
+                              />
+                            )}
+                          </Draggable>
+                        ))}
+                      {provided.placeholder}
+                    </DayContainer>
+                  )}
+                </Droppable>
+              ))}
           </DragDropContext>
         </WeekContainer>
 

@@ -9,7 +9,9 @@ export default function WeekScheduleHeader() {
     ));
   return (
     <header>
-      <WeekContainer>{renderDaysName()}</WeekContainer>
+      <WeekContainer>
+        {renderDaysName()}
+        </WeekContainer>
       <Banner>Weekdays</Banner>
     </header>
   );

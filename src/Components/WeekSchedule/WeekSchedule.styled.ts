@@ -21,7 +21,11 @@ export const WeekContainer = styled.div`
   display: flex;
 `;
 
-export const AddLessonButton = styled.button`
+export const WeekActionButtonsContainer = styled.div`
+  display: flex;
+`;
+
+export const ActionButton = styled.button`
   background: transparent;
   text-style: underline;
   border: 1px solid #dbdada;
@@ -30,6 +34,7 @@ export const AddLessonButton = styled.button`
   font-weight: bold;
   transition: all 0.5s ease-out;
   font-size: 20px;
+  min-width:300px;
 
   display: block;
   margin: 0 auto 80px auto;
