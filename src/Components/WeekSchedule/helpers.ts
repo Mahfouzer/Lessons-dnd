@@ -1,5 +1,7 @@
 import { DraggableLocation } from "react-beautiful-dnd";
 import { LessonType } from "../../Models/Lesson.model";
+import { toast } from "react-toastify";
+
 
 export const reorder = (
   list: LessonType[],
@@ -41,3 +43,28 @@ export const generateLesson = (lessonSubject: string) => [
     description: "this is a lesson",
   },
 ];
+
+
+export const notifySuccess = () =>
+  toast("Your changes were saved", {
+    position: "bottom-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    type: "success",
+    progress: undefined,
+  });
+  
+export const notifyError = () =>
+  toast("Something went wrong please check your internet connection", {
+    position: "bottom-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    type: "error",
+    progress: undefined,
+  });

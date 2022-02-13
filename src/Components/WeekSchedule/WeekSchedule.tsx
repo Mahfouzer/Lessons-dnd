@@ -16,7 +16,7 @@ import {
 import Lesson from "../Lesson/Lesson";
 import LessonModal from "../LessonModal/LessonModal";
 import LessonForm from "../LessonForm/LessonForm";
-import { move, reorder } from "./helpers";
+import { move, notifyError, notifySuccess, reorder } from "./helpers";
 import WeekScheduleHeader from "./WeekScheduleHeader";
 import { LessonType, WeekScheduleType } from "../../Models/Lesson.model";
 
@@ -59,11 +59,13 @@ export default function WeekSchedule() {
       .then((response) => response.json())
       .then((SuccessfulUpdatedWeek) => {
         setWeekScheduleData(SuccessfulUpdatedWeek.data);
+        notifySuccess();
       })
       .catch((e) => {
         alert("An error happened please try again later");
         //fallback to previous data
         setWeekScheduleData(preUpdatedData);
+        notifyError();
       });
   };
 
