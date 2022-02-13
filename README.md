@@ -1,6 +1,19 @@
-# Getting Started with Create React App
+# Technologies
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with
+- Create-React-App
+- react-beautiful-dnd
+- react-hook-form
+- styled-components
+- react-toastify
+- react-modal
+
+
+- no (axoios) only fetch as it's only two API calls needed 
+
+## Pre-Running
+Please install dependencies running the following line first
+### `npm install`
 
 ## Available Scripts
 
@@ -11,38 +24,26 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Deployment 
 
-### `npm test`
+ this app is deployed twice 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  - netlify (without Back-end support): https://lesson-dnd.netlify.app/
 
-### `npm run build`
+  - netlify (with Back-end support): https://lesson-dnd-be-integrated.netlify.app
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  note: sometimes the Back-end integrated version takes some time as the `glitch` service (instance) sleeps 
+  so it may take 5~6 seconds to start and get back with data to the front-end through the API 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ ## Back-end integration 
 
-### `npm run eject`
+ this app is integrated with BE on `feature/BE-integrated`
+ using JSON-server deployed on glith cloud
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ -it's really straight-forward code for json-server it's basicly forked of another JSON-server and deployed on glitch
+ if you needed any information about it please contact me direct @ dev.mahfouzer@gmail.com 
+ -
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
+ the `master` branch has the static version of this site  
 
